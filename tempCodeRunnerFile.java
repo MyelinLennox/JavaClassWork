@@ -1,1 +1,2 @@
-february
+
+                guessSize = input.nextInt();
