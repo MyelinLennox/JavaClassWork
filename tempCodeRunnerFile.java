@@ -1,2 +1,1 @@
-
-                guessSize = input.nextInt();
+secondNumber
