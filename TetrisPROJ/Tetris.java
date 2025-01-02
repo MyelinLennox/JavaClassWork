@@ -1,36 +1,41 @@
+import jcurses.system.InputChar;
+import jcurses.system.Toolkit;
+
 
 public class Tetris {
     static int[][] board = new int[22][10];
-    static boolean isPlaying = false;
+    static boolean screenUpdate = true;
+
+
+
 
     public static void main(String[] args) {
-        isPlaying = true;
-
         board[0][0] = 1;
         board[0][5] = 1;
         board[9][8] = 1;
-            
-        try {
-            Thread.sleep(1000);
-            board[0][0] = 1;
-            
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        board[8][8] = 1;
 
-        while (isPlaying) {
-            
+        while (true) {
+            updateDisplay(board);
+
             try {
-                Thread.sleep(125);
-                updateDisplay(board);
-                updateBlocksPos(board);
+                gameTick();
+                Thread.sleep(400);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
+
+               
+    }
+
+    public static void gameTick() {
+        
+        updateBlocksPos(board);
     }
 
     public static void updateBlocksPos(int[][] display) {
+        screenUpdate = true;
         for (int i = display.length - 3; i >= 0; i--) {
             for (int j = 0; j < display[i].length; j++) {
                 if (display[i][j] == 1 && display[i + 1][j] == 0) {
@@ -39,11 +44,11 @@ public class Tetris {
                 }
             }
         }
+        screenUpdate = false;
     }
 
     public static void updateDisplay(int[][] display) {
         System.out.print("\033[H\033[2J");
-        System.out.flush();
 
         for (int i = 0 ; i < display.length ; i++) {
             System.out.println();
@@ -86,7 +91,7 @@ public class Tetris {
                 
             }
 
-
         }
+        System.out.flush();
     }
 }
